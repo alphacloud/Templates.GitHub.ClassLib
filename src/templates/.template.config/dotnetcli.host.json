@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json.schemastore.org/dotnetcli.host",
+  "symbolInfo": {
+    "namespacePrefix": {
+      "longName": "namespace-prefix",
+      "shortName": "ns"
+    },
+    "repositoryName": {
+      "longName": "repository-name",
+      "shortName": "repo"
+    },
+    "projectTags": {
+      "longName": "project-tags",
+      "shortName": "tags"
+    },
+    "projectDescription":{
+      "longName": "project-descrption",
+      "shortName": "descr"
+    },
+    "coverallsKey":{
+      "longName": "coveralls-key",
+      "shortName": "coveralls"
+    },
+    "githubKey":{
+      "longName": "github-key",
+      "shortName": "github"
+    },
+    "nugetKey":{
+      "longName": "nuget-key",
+      "shortName": "nuget"
+    },
+    "signAssembly": {
+      "longName": "sign-assembly",
+      "shortName": "sign"
+    },
+    "skipRestore": {
+      "longName": "no-restore",
+      "shortName": "nr"
+    }
+//,
+//    "": {
+//      "longName": "",
+//      "shortName": ""
+//    }
+
+  }
+}

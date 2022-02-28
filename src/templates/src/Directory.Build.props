@@ -1,0 +1,70 @@
+﻿<Project>
+
+  <PropertyGroup Label="Common">
+    <LibraryTargetFrameworks>netstandard2.1;net6.0</LibraryTargetFrameworks>
+    <ApplicationTargetFrameworks>net5.0;net6.0</ApplicationTargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Build">
+    <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
+    <AssemblyName>NAMESPACE_PREFIX.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <SignAssembly>True</SignAssembly>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DebugSymbols>True</DebugSymbols>
+    <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <RepositoryUrl>https://github.com/alphacloud/REPO_NAME</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/alphacloud/REPO_NAME</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>alphacloud</PackageTags>
+    <PackageReleaseNotes>https://github.com/alphacloud/REPO_NAME/milestone/1</PackageReleaseNotes>
+    <Authors>REPO_OWNER</Authors>
+    <Company>Alphacloud</Company>
+    <Description>PRODUCT_DESCRIPTION</Description>
+    <Copyright>(c) Alphacloud</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Label="SourceLink">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(MSBuildProjectFullPath.Contains(samples))' == true">
+    <TargetFrameworks>$(ApplicationTargetFrameworks)</TargetFrameworks>
+    <NoWarn>$(NoWarn);CS0618;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(MSBuildProjectName.Contains(Tests))' == true ">
+    <TargetFrameworks>$(ApplicationTargetFrameworks)</TargetFrameworks>
+    <NoWarn>$(NoWarn);CS0618;CS1591</NoWarn>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>NAMESPACE_PREFIX.ClassLib.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Alphacloud",
+  "classifications": [ "Alphacloud", "ClassLib" ],
+  "name": "Alphacloud GitHib project for C# class library",
+  "identity": "Alphacloud.Templates.GitHub.ClassLib",
+  "shortName": "ac-github-classlib",
+  "tags": {
+    "type": "project",
+    "language": "C#"
+  },
+  "sourceName": "ClassLib",
+  "primaryOutputs": [
+    {
+      "path": "src/ClassLib.sln"
+    }
+  ],
+
+  "guids": [
+  ],
+
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "exclude": [
+        ".template.config/**",
+        "**/.vs/**",
+        "**/[Bb]in/**",
+        "**/[Oo]bj/**",
+        "**/*.filelist",
+        "**/*.user",
+        "**/*.lock.json"
+      ]
+    }
+  ],
+
+  "symbols": {
+    "repositoryName": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "ClassLib",
+      "replaces": "REPO_NAME",
+      "description": "Repository name."
+    },
+
+    "namespacePrefix": {
+      "type": "parameter",
+      "defaultValue": "Alphacloud.",
+      "replaces": "NAMESPACE_PREFIX.",
+      "description": "Project namespace prefix, ending with . (Alphacloud.)"
+    },
+
+    "projectTags": {
+      "type": "parameter",
+      "defaultValue": "alphacloud",
+      "replaces": "PRODUCT_TAGS",
+      "description": "Package tags"
+    },
+
+    "projectDescription": {
+      "type": "parameter",
+      "required": "true",
+      "defaultValue": "",
+      "description": "Project description.",
+      "replaces": "PRODUCT_DESCRIPTION"
+    },
+
+    "coverallsKey": {
+      "type": "parameter",
+      "isRequired": true,
+      "description": "API key to display coverage information on Coveralls.io.",
+      "replaces": "COVERALLS_KEY"
+    },
+
+    "githubKey": {
+      "type": "parameter",
+      "isRequired": true,
+      "description": "GitHub token to use for release management.",
+      "replaces": "GITHUB_KEY"
+    },
+
+    "nugetKey": {
+      "type": "parameter",
+      "isRequired": true,
+      "description": "API key to publish packages on nuget.org.",
+      "replaces": "NUGET_KEY"
+    },
+
+    "signAssembly":  {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Sign assembly with cryptographic key."
+    },
+
+   "skipRestore": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "If specified, skips the automatic restore of the project on create.",
+      "defaultValue": "false"
+    }
+
+   },
+
+  "postActions": [
+    {
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "condition": "(!skipRestore)",
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet restore'"
+        }
+      ],
+      "continueOnError": true
+    },
+    {
+      "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C",
+      "description": "Review todo items",
+      "manualInstructions": [
+        {
+          "text": "Address todo items in the code."
+        }
+      ]
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "condition": "signAssembly",
+      "args": {
+        "executable": "sn",
+        "args": "-k src/keyfile.snk",
+        "redirectStandardOutput": "false",
+        "redirectStandardError": "false"
+      },
+      "manualInstructions": [{
+         "text": "Run 'sn -k keyfile.snk' in src folder to generate new strong name key pair."
+      }],
+      "continueOnError": true,
+      "description ": "Generate SNK file"
+    }
+  ]
+}

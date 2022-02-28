@@ -1,0 +1,100 @@
+version: .{build}
+
+pull_requests:
+  do_not_increment_build_number: true
+
+nuget:
+  disable_publish_on_pr: true
+
+image:
+  - Ubuntu
+  - Visual Studio 2022
+
+environment:
+  CAKE_SETTINGS_SKIPVERIFICATION: true
+  CAKE_SETTINGS_SKIPPACKAGEVERSIONCHECK: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+install:
+#  - ps: ./dotnet-install.ps1 -Version 6.0.100 -InstallDir "C:\Program Files\dotnet"
+  - ps: dotnet new tool-manifest
+  - ps: dotnet tool install Cake.Tool --version 1.3.0
+
+build_script:
+  - ps: dotnet cake
+
+test: off
+
+matrix:
+  fast_finish: true
+
+for:
+
+# Linux build
+-
+  matrix:
+    except:
+      - image: Visual Studio 2022
+
+  clone_folder: ~/work/REPO_NAME
+
+  install:
+#    - sh: sudo ./dotnet-install.sh -Version 6.0.100 -InstallDir /usr/share/dotnet/
+    - sh: touch ./src/common/AssemblyVersion.cs
+    - sh: dotnet new tool-manifest
+
+  build_script:
+    - sh: dotnet test ./src -c Release --test-adapter-path . --logger AppVeyor
+
+
+# Windows build
+-
+  matrix:
+    only:
+      - image: Visual Studio 2022
+
+  clone_folder: c:\work\REPO_NAME
+
+  cache:
+    - c:\tmp\cake\tools -> appveyor.yml
+
+  environment:
+    coveralls_repo_token:
+      secure: COVERALLS_KEY
+    appveyor_cache_entry_zip_args: -t7z -m0=lzma -mx=5 -ms=on
+    CAKE_PATHS_TOOLS: c:\tmp\cake\tools\
+    GITHUB_TOKEN:
+      secure: GITHUB_KEY
+
+  artifacts:
+    - path: Drops/Packages/*.nupkg
+      name: NuGet packages
+
+    - path: Drops/Packages/*.snupkg
+      name: NuGet symbol packages
+      type: NuGetPackage
+  #  - path: Drops/Inspections/CodeDuplicates.html
+  #    name: CodeDuplicates
+  #  - path: Drops/Inspections/CodeInspections.html
+  #    name: CodeInspections
+
+  deploy:
+    - provider: NuGet
+      name: Pre-release
+      api_key:
+        secure: NUGET_KEY
+      on:
+        branch:
+          - develop
+          - /release\/v.*/
+          - /releases.*/
+          - /hotfixes.*/
+
+    - provider: NuGet
+      name: Tagged release
+      api_key:
+        secure: NUGET_KEY
+      on:
+        appveyor_repo_tag: true
+
