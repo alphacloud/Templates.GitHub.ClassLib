@@ -19,9 +19,7 @@ environment:
 install:
   - ps: dotnet new tool-manifest
   - ps: dotnet tool install Cake.Tool --version 1.3.0
-
-build_script:
-  - ps: dotnet cake
+  - ps: dotnet tool install GitVersion.Tool --version 5.8.2
 
 test: off
 
@@ -38,12 +36,11 @@ for:
 
   clone_folder: ~/work/template.classlib
 
-  install:
-    - sh: touch ./src/common/AssemblyVersion.cs
-    - sh: dotnet new tool-manifest
-
   build_script:
-    - sh: dotnet test ./src -c Release --test-adapter-path . --logger AppVeyor
+    - sh: SemVer=$(dotnet dotnet-gitversion -showvariable InformationalVersion)
+    - sh: dotnet pack ./src -c Release /p:Version=$SemVer
+    - sh: dotnet dotnet-gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
+    - sh: ./test-templates.sh
 
 
 # Windows build
@@ -62,6 +59,12 @@ for:
     CAKE_PATHS_TOOLS: c:\tmp\cake\tools\
     GITHUB_TOKEN:
       secure: oWsS4pNwWN+Y2KV6bCr8yKthXMVhVY3WORd7vSNXiwFT3VH7gdBGVNeFg/McrbzY
+
+  build_script:
+    - ps: $GitVersion = gitversion | ConvertFrom-Json
+    - ps: dotnet pack ./src -c Release /p:Version=$GitVersion.SemVer -o Drops/Packages/
+    - ps: gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
+    - ps: test-templates.cmd
 
   artifacts:
     - path: Drops/Packages/*.nupkg
@@ -84,8 +87,7 @@ for:
         branch:
           - develop
           - /release\/v.*/
-          - /releases.*/
-          - /hotfixes.*/
+          - /hotfix\/v.*/
 
     - provider: NuGet
       name: Tagged release
@@ -93,4 +95,3 @@ for:
         secure: 8vpp3v6A7cXo+jJPb4ZcyZ5KdfNgcElKlJHI/lB+dfbycWfANsPeAToD/Q9z6v4z
       on:
         appveyor_repo_tag: true
-

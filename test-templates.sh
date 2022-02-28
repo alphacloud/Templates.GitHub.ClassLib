@@ -7,11 +7,12 @@ function test_template() {
   mkdir $1
   cd $1
   echo -e "\033[97m******************\nTesting $1 ($2) ..\n******************\033[39m"
-  dotnet new ac-github-classlib --force --no-restore $2
+  dotnet new ac-github-classlib --force --no-restore --coveralls-key=COVERALLSKEY --github-key=GITHUBKEY --nuget-key=NUGETKEY $2
   cd src
   dotnet restore -v q
   dotnet build -v q --no-restore
   dotnet test --no-build
+  dotnet pack -c Release
 }
 
 rm -Rf ./temp

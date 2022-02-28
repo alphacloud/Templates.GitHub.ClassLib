@@ -27,5 +27,8 @@ cd src
 dotnet restore -v q
 dotnet build -v q --no-restore
 dotnet test --no-build
+
+dotnet pack -c Release
+
 exit /b
 
