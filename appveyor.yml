@@ -61,6 +61,7 @@ for:
       secure: oWsS4pNwWN+Y2KV6bCr8yKthXMVhVY3WORd7vSNXiwFT3VH7gdBGVNeFg/McrbzY
 
   build_script:
+    - ps: dotnet-gitversion
     - ps: $GitVersion = dotnet-gitversion | ConvertFrom-Json
     - ps: dotnet pack ./src -c Release /p:Version=$GitVersion.SemVer -o Drops/Packages/
     - ps: dotnet-gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
