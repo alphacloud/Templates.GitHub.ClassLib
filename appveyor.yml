@@ -74,7 +74,8 @@ for:
     - ps: Write-Output $GitVersion
     - ps: cd src
     - ps: Get-ChildItem
-    - ps: dotnet pack -c Release /p:Version=$GitVersion.SemVer -o Drops/Packages/ -v d
+    - ps: dotnet build -c Release
+    - ps: dotnet pack -c Release --no-build
     - ps: dotnet-gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
     - ps: test-templates.cmd
 
