@@ -73,7 +73,7 @@ for:
     - ps: $GitVersion = dotnet gitversion | ConvertFrom-Json
     - ps: Write-Output $GitVersion
     - ps: dotnet --info
-    - ps: dotnet pack ./src -c Release /p:Version=$GitVersion.SemVer -o Drops/Packages/
+    - ps: dotnet pack ./src -c Release /p:Version=$GitVersion.SemVer -o Drops/Packages/ -v d
     - ps: dotnet-gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
     - ps: test-templates.cmd
 
