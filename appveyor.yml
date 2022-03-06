@@ -43,7 +43,7 @@ for:
 
   build_script:
     - sh: SemVer=$(dotnet dotnet-gitversion -showvariable InformationalVersion)
-    - sh: dotnet pack ./src -c Release /p:Version=$SemVer
+    - sh: dotnet pack ./src/Alphacloud.Templates.GitHub.ClassLib.csproj -c Release /p:Version=$SemVer
     - sh: dotnet dotnet-gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
     - sh: ./test-templates.sh
 
@@ -73,7 +73,7 @@ for:
     - ps: $GitVersion = dotnet gitversion | ConvertFrom-Json
     - ps: Write-Output $GitVersion
     - ps: dotnet --info
-    - ps: dotnet pack ./src -c Release /p:Version=0.0.1 -o Drops/Packages/ -v d
+    - ps: dotnet pack ./src/Alphacloud.Templates.GitHub.ClassLib.csproj -c Release /p:Version=$GitVersion.SemVer -o Drops/Packages/ -v d
     - ps: dotnet-gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
     - ps: test-templates.cmd
 
