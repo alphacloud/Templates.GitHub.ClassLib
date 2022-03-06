@@ -9,8 +9,6 @@
     <Description>GitHub repository template for C# library.</Description>
     <PackageTags>alphacloud;dotnet-new;templates;github</PackageTags>
 
-    <TargetFramework>net6.0</TargetFramework>
-
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
