@@ -5,10 +5,13 @@
     <PackageVersion>$(Version)</PackageVersion>
     <PackageId>Alphacloud.Templates.GitHub.ClassLib</PackageId>
     <Title>Alphacloud.Templates.GitHub.ClassLib</Title>
+    <IsPackable>true</IsPackable>
     <Authors>Alphacloud</Authors>
     <Description>GitHub repository template for C# library.</Description>
     <PackageTags>alphacloud;dotnet-new;templates;github</PackageTags>
 
+    <TargetFramework>net6.0</TargetFramework>
+    
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
