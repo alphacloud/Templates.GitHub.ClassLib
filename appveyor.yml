@@ -7,8 +7,8 @@ nuget:
   disable_publish_on_pr: true
 
 image:
-  - Ubuntu
   - Visual Studio 2022
+  - Ubuntu
 
 environment:
   CAKE_SETTINGS_SKIPVERIFICATION: true
@@ -70,8 +70,8 @@ for:
     - ps: dotnet tool install -g GitVersion.Tool --version 5.8.2
     
   build_script:
-    - ps: dotnet gitversion
     - ps: $GitVersion = dotnet gitversion | ConvertFrom-Json
+    - ps: Write-Output $GitVersion
     - ps: dotnet pack ./src -c Release /p:Version=$GitVersion.SemVer -o Drops/Packages/
     - ps: dotnet-gitversion /UpdateAssemblyInfo ./src/templates/src/common/AssemblyVersion.cs /EnsureAssemblyInfo
     - ps: test-templates.cmd
